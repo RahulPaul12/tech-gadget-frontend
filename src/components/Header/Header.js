@@ -1,16 +1,139 @@
+import { IconButton } from '@mui/material';
 import React from 'react';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import logo from '../../images/logo.png';
+import Banner from '../Banner/Banner';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import './Header.css';
+import Badge from '@mui/material/Badge';
+import image from '../../images/rsz_user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg';
+//import InputAdornment from '@mui/material/InputAdornment';
+import { styled } from '@mui/material/styles';
+import { AccountCircle } from '@mui/icons-material';
+const Header = (props) => {
 
-
-const Header = () => {
+  
     const { user, logOut } = useAuth();
+    
+    const { cart } = props;
+    // const totalReducer = (previous, product) => previous + product.price;
+    // const total = cart.reduce(totalReducer, 0);
+    let totalQuantity = 0;
+    let total = 0;
+    
+        totalQuantity = totalQuantity;
+    
+    // const StyledBadge = styled(Badge)(({ theme }) => ({
+    //     '& .MuiBadge-badge': {
+    //       right: -3,
+    //       top: 13,
+    //       border: `2px solid ${theme.palette.background.paper}`,
+    //       padding: '0 4px',
+    //     },
+    //   }));
+
+
+      let imageurl = "";
+  if(user.photoURL===null){
+      imageurl=image;
+  }
+  else{
+    imageurl=user.photoURL;
+  }
     return (
-        <div className="header">
-            <img className="logo" src={logo} alt="" />
-            <nav>
+     
+        <div className="header ">
+         
+           
+           <Navbar bg="dark" expand="lg" >
+  <Container >
+    <Navbar.Brand 
+    style={{ color: 'white', fontSize:40 }}>
+
+    <span style={{marginLeft:''}}>T</span>ech <span>G</span>adget
+     </Navbar.Brand>
+   <Navbar.Toggle aria-controls="basic-navbar-nav" />
+   <Navbar.Collapse id="basic-navbar-nav">
+<div style={{marginLeft:'auto'}}>
+      <Nav >
+                 <NavLink to="/home" style={{ alignItems:'right',marginLeft:'auto' }} className="active">Home</NavLink>
+                <NavLink to="/shop" >Shop</NavLink>
+                <NavLink to="/review" >Order Review</NavLink>
+               <NavLink to="/about">About us</NavLink>
+            
+                {user.email && <NavLink to="/orders">Orders</NavLink>}
+                  {user.email && <img src= {imageurl} alt="" style={{width:'10%', borderRadius:"50%"}}/>}
+                {
+                    user.email ?
+                        <></>
+                        :
+                        <NavLink to="/login">Login</NavLink>}
+                        {
+                          user.email ?
+                          <NavDropdown title="" id="basic-nav-dropdown">
+          <NavDropdown.Item to="/addproduct" className="item"><NavLink to="/addproduct" >Add Product</NavLink></NavDropdown.Item>
+           <NavDropdown.Item to="/review" className="item"><NavLink to="/review" >Manage Order</NavLink></NavDropdown.Item>
+           <NavDropdown.Item to="#action/3.3" onClick={logOut} className="item">Log Out</NavDropdown.Item>
+           
+       </NavDropdown> 
+       : <div></div>
+                        }
+       
+      </Nav>
+       </div>
+    </Navbar.Collapse>
+  </Container>
+ </Navbar>
+ 
+            
+ 
+        </div>
+        
+    );
+};
+
+ export default Header; 
+ //<Navbar bg="dark" expand="lg">
+//   <Container>
+//     <Navbar.Brand>
+
+//       Tech Gadget
+//       </Navbar.Brand>
+//     <Navbar.Toggle aria-controls="basic-navbar-nav" />
+//     <Navbar.Collapse id="basic-navbar-nav"className="justify-content-end">
+//       <div >
+//       <Nav>
+//                 <NavLink to="/shop" style={{ alignItems:'right' }}>Shop</NavLink>
+//                 <NavLink to="/review" >Order Review</NavLink>
+//                 <NavLink to="/inventory">Manage Inventory</NavLink>
+//                 {.email && <NavLink to="/orders">Orders</NavLink>}
+//                 {user.email && <span style={{ color: 'white' }}>Hello {user.displayName} </span>}
+//                 {
+//                     user.email ?
+//                         <button onClick={logOut}>log out</button>
+//                         :
+//                         <NavLink to="/login"><span class="glyphicon glyphicon-log-in"></span>Login</NavLink>}
+//                         {
+//                           user.email ?
+//                           <NavDropdown title="Dropdown" id="basic-nav-dropdown" className="">
+//           <NavDropdown.Item href="#action/3.1" className="item">Action</NavDropdown.Item>
+//           <NavDropdown.Item href="#action/3.2" className="item">Another action</NavDropdown.Item>
+//           <NavDropdown.Item href="#action/3.3" className="item">Something</NavDropdown.Item>
+//           <NavDropdown.Divider />
+//           <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+//         </NavDropdown> 
+//         : <div></div>
+//                         }
+        
+//       </Nav>
+//       </div>
+//     </Navbar.Collapse>
+//   </Container>
+// </Navbar>
+{/* <nav className="header2">
                 <NavLink to="/shop">Shop</NavLink>
                 <NavLink to="/review">Order Review</NavLink>
                 <NavLink to="/inventory">Manage Inventory</NavLink>
@@ -20,10 +143,4 @@ const Header = () => {
                     user.email ?
                         <button onClick={logOut}>log out</button>
                         :
-                        <NavLink to="/login">Login</NavLink>}
-            </nav>
-        </div>
-    );
-};
-
-export default Header;
+                        <NavLink to="/login">Login</NavLink>}</nav> */}

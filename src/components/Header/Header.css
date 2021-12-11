@@ -1,11 +1,11 @@
-.header{
-    text-align: center;
+.header2{
+    padding: .5%;
+    text-align: right;
+    padding-right:2% ;
 }
-.logo{
-    height: 50px;
-}
+
 .header nav {
-    background-color: black;
+    background-color: rgb(10, 10, 10);
     line-height: 40px;
 }
 .header nav a{
@@ -13,8 +13,26 @@
     color: white;
     margin-right: 20px;
     padding: 5px;
-    font-size: 20px;
+    font-size: 15px;
 }
 .header nav a:hover{
-    background-color: lightgray;
+    color: brown;
+   
+    
+}
+.header nav a:focus{
+    color: brown;
+    
+}
+.item{
+    background-color: black;
+}
+.text-white{
+    color: white;
+}
+span{
+    color: brown;
+}
+.drop{
+    background-color: black;
 }

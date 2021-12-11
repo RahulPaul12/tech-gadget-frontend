@@ -5,17 +5,25 @@ import { addToDb } from '../../utilities/fakedb';
 import './Shop.css';
 import useCart from '../../hooks/useCart';
 import { Link } from 'react-router-dom';
+import Header from '../Header/Header';
+import useAuth from '../../hooks/useAuth';
+import { CircularProgress } from '@mui/material';
+import { Spinner } from 'react-bootstrap';
 
 const Shop = () => {
+    
+    const [loading, setloading] = useState(true)
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useCart();
     const [page, setPage] = useState(0);
     const [pageCount, setPageCount] = useState(0);
     // products to be rendered on the UI
     const [displayProducts, setDisplayProducts] = useState([]);
-    const size = 10;
+    const size = 12;
     useEffect(() => {
-        fetch(`http://localhost:5000/products?page=${page}&&size=${size}`)
+         setloading(true)
+        fetch(`https://guarded-refuge-42255.herokuapp.com/products?page=${page}&&size=${size}`)
+           
             .then(res => res.json())
             .then(data => {
                 setProducts(data.products);
@@ -56,12 +64,21 @@ const Shop = () => {
 
     return (
         <>
-            <div className="search-container">
-                <input
-                    type="text"
-                    onChange={handleSearch}
-                    placeholder="Search Product" />
+        
+             <div className="search-container">
+             <div>
+            <div class="container h-100">
+                 <div class="d-flex justify-content-center h-100">
+                   <div class="searchbar">
+                      <input class="search_input" type="text" name="" placeholder="Search Product"/>
+                        <a onClick={handleSearch} class="search_icon"><i class="fas fa-search"></i></a>
+                   
+               </div>
+               </div>
             </div>
+        </div>
+    
+             </div>
             <div className="shop-container">
                 <div className="product-container">
                     {
@@ -72,6 +89,7 @@ const Shop = () => {
                         >
                         </Product>)
                     }
+                    </div>
                     <div className="pagination">
                         {
                             [...Array(pageCount).keys()]
@@ -83,14 +101,14 @@ const Shop = () => {
                         }
                     </div>
                 </div>
-                <div className="cart-container">
+                {/* <div className="cart-container">
                     <Cart cart={cart}>
                         <Link to="/review">
                             <button className="btn-regular">Review Your Order</button>
                         </Link>
                     </Cart>
-                </div>
-            </div>
+                </div> */}
+            
         </>
     );
 };

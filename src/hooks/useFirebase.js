@@ -1,50 +1,113 @@
 import { useState, useEffect } from 'react';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, getIdToken } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, getIdToken } from "firebase/auth";
 import initializeAuthentication from '../Firebase/firebase.init';
 
 initializeAuthentication();
 
 const useFirebase = () => {
-    const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(true)
+    const [user, setuser] = useState({});
+    const [loading, setloading] = useState(true)
+    const [authError, setAuthError] = useState('');
+    //const [admin, setAdmin] = useState(false);
+    const [token, setToken] = useState('');
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
 
-    const signInUsingGoogle = () => {
-        return signInWithPopup(auth, googleProvider)
-            .finally(() => { setLoading(false) });
+    const registerUser =(email,password)=>{
+        setloading(true);
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+            // Signed in 
+            setAuthError('');
+            
+            
+          })
+          .catch((error) => {
+            setAuthError(error.message);
+            window.alert(error.message);
+
+          })
+          .finally(() => setloading(false));
+        }
+
+    const HandleGoogleLogin = (location,history) => {
+        setloading(true);
+        signInWithPopup(auth, googleProvider)
+        .then((result)=>{
+            setuser(result.user);
+            sessionStorage.setItem('email', result.user.email);
+            setAuthError("");
+        })
+        .catch((error) => {setAuthError(error.message)})
+            .finally(() => { setloading(false) });
     }
 
+
     const logOut = () => {
-        setLoading(true);
+        setloading(true);
         signOut(auth)
             .then(() => {
-                setUser({})
+               
             })
-            .finally(() => setLoading(false))
+            .catch((error) => {
+               
+            })
+            .finally(() => setloading(false))
     }
+    const loginUser = (email, password, location, history) => {
+        setloading(true);
+        signInWithEmailAndPassword(auth, email, password)
+            .then((result) => {
+                const destination = location?.state?.from || '/home';
+                history.replace(destination);
+                setAuthError('');
+            })
+            .catch((error) => {
+                setAuthError(error.message);
+            })
+            .finally(() => setloading(false));
+    }
+
 
     // observe whether user auth state changed or not
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
+                setuser(user);
                 getIdToken(user)
-                    .then(idToken => localStorage.setItem('idToken', idToken));
-                setUser(user);
+                    .then(idToken => localStorage.setItem('idToken',idToken));
+                
             }
             else {
-                setUser({});
+                setuser({});
             }
-            setLoading(false);
+            setloading(false);
         });
         return () => unsubscribe;
-    }, [])
+    }, []);
+
+    const saveUser = (email, displayName, method) => {
+        const user = { email, displayName };
+        fetch('https://stark-caverns-04377.herokuapp.com/users', {
+            method: method,
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then()
+    }
 
     return {
         user,
         loading,
-        signInUsingGoogle,
-        logOut
+        token,
+        loginUser,
+        authError,
+        HandleGoogleLogin,
+        
+        logOut,
+        registerUser
     }
 }
 
