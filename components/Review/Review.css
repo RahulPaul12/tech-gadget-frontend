@@ -1,0 +1,32 @@
+.unit1 {
+    
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+  }
+.unit {
+    
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+  }
+
+  .unit img {
+    border-radius: 100px;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+
+  .unit p {
+    text-align: left;
+    margin: 2px;
+  }
+
+  .unit p:first-of-type {
+    font-weight: bolder;
+    margin-bottom: 5px;
+  }
+
+ 
+  

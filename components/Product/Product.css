@@ -1,0 +1,22 @@
+
+.card-body:hover{
+    
+        background-color: rgb(187, 173, 180);
+}
+.card{
+    height:600px;
+}
+.card{
+    border: 2px solid lightslategrey;
+}
+.product-name{
+    color: blue;
+    font-weight: 400;
+}
+.btn-regular{
+   
+    cursor: pointer;
+}
+.icon-color{
+    color: gold;
+}
